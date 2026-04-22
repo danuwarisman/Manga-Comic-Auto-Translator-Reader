@@ -1,0 +1,32 @@
+# Backend Dependencies for Manga Comic Auto Translator Reader
+# Python 3.10+
+
+# Web Framework
+fastapi[standard]>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# AI & ML Libraries
+ultralytics>=8.0.0  # YOLOv8 for balloon/text detection
+manga-ocr>=0.7.0    # OCR specifically for manga
+torch>=2.0.0        # PyTorch - ML framework
+torchvision>=0.15.0 # Computer vision models
+torchaudio>=2.0.0   # Audio processing (if needed)
+
+# Image & File Processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+comicpy>=0.3.0      # Comic/manga file handling (CBZ, PDF support)
+
+# Optional: Translation Support
+# google-trans-new>=1.1.9  # Google Translate API (if no Sugoi available)
+# deepl>=1.16.0            # DeepL API (requires API key)
+
+# Utilities
+python-multipart>=0.0.6  # For file uploads
+python-dotenv>=1.0.0     # Environment variables management
+
+# Development (optional, remove for production)
+# pytest>=7.4.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0

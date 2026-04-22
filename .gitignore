@@ -64,6 +64,7 @@ cover/
 
 # Environments
 .env
+.env.*
 .venv
 env/
 venv/
@@ -72,6 +73,7 @@ env.bak/
 venv.bak/
 
 # Model AI (ukuran besar, diunduh otomatis saat runtime)
+backend/models/
 backend/models/*.pt
 backend/models/*.onnx
 backend/models/*.pth
@@ -138,8 +140,3 @@ $RECYCLE.BIN/
 *.secret
 secrets.yaml
 config.local.yaml
-
-
-
-
-CONTRIBUTING.md
