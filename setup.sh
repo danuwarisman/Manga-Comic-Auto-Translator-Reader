@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# ==============================================
-# ScanBridge - Automated Setup Script (Linux/macOS)
-# ==============================================
+# =========================================================
+# Manga Comic Auto Translator Reader - Setup Script (Linux/macOS)
+# =========================================================
 
 set -e  # Hentikan skrip jika ada error
 
@@ -76,31 +76,8 @@ print_info "Virtual environment diaktifkan."
 # --- 4. Instal Dependensi Python ---
 print_header "Menginstal Dependensi Python..."
 pip install --upgrade pip
-
-# Daftar pustaka yang dibutuhkan (sama seperti di dokumen)
-REQUIREMENTS=(
-    "fastapi[standard]"
-    "ultralytics"
-    "manga-ocr"
-    "comicpy"
-    "opencv-python"
-    "Pillow"
-    "torch"
-    "torchvision"
-    "torchaudio"
-)
-
-for pkg in "${REQUIREMENTS[@]}"; do
-    print_info "Memeriksa $pkg..."
-    if pip show "${pkg%%[*}" > /dev/null 2>&1; then
-        print_success "$pkg sudah terinstal."
-    else
-        print_info "Menginstal $pkg..."
-        pip install "$pkg"
-    fi
-done
-
-print_success "Semua dependensi Python berhasil diproses."
+pip install -r requirements.txt
+print_success "Dependensi Python dari requirements.txt berhasil diinstal."
 deactivate  # Keluar dari virtual environment
 cd ..
 
@@ -123,12 +100,13 @@ echo "- MangaOCR (pembaca teks) : ~200-300 MB"
 echo "- LaMa (penghapus teks)   : ~300-500 MB"
 echo "- Sugoi Translator        : ~3-5 GB (Opsional, bisa gunakan Google Translate gratis)"
 
-print_success "=============================================="
-print_success "Setup ScanBridge Selesai!"
-print_success "=============================================="
+print_success "=============================================================="
+print_success "Setup Manga Comic Auto Translator Reader selesai!"
+print_success "=============================================================="
 echo "Langkah selanjutnya:"
 echo "1. Buka terminal baru, masuk ke folder 'backend', dan aktifkan venv:"
 echo "   cd backend && source venv/bin/activate"
-echo "2. Jalankan server backend: uvicorn server.main:app --reload"
+echo "2. Jalankan server backend:"
+echo "   uvicorn server.main:app --reload --host 0.0.0.0 --port 8000"
 echo "3. Buka terminal lain, masuk ke folder 'frontend', dan jalankan:"
 echo "   flutter run"

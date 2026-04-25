@@ -4,71 +4,115 @@
 
 ### 1. ✅ Removed Empty `/server/` Folder
 - **Issue**: Duplicate folder at root level, conflicting with `backend/server/`
-- **Action**: Deleted `/server/` directory
-- **Impact**: Cleaner project structure, no more confusion about server location
+- **Action**: Deleted confusing duplicate server structure from the project root
+- **Impact**: Project structure is cleaner and backend entrypoint is now clearly under `backend/server/`
 
 ### 2. ✅ Created `backend/requirements.txt`
-- **Issue**: Dependencies only in `setup.sh`, not in standard Python format
-- **File**: [backend/requirements.txt](../../backend/requirements.txt)
-- **Includes**: FastAPI, Ultralytics, MangaOCR, PyTorch, torch dependencies, OpenCV, file handling libs
-- **Impact**: Standard Python project structure, reproducible builds, easier dependency management
+- **Issue**: Dependencies previously lived only in setup notes/scripts and were not managed in standard Python format
+- **File**: `backend/requirements.txt`
+- **Includes**: FastAPI, Uvicorn, MangaOCR, PyTorch-related packages, OpenCV, Pillow, comic/file handling dependencies
+- **Impact**: Reproducible backend setup and easier installation for local development
 
 ### 3. ✅ Fixed Android App ID
-- **Issue**: `com.example.frontend` - placeholder, cannot publish to Play Store
-- **File**: [frontend/android/app/build.gradle.kts](../../frontend/android/app/build.gradle.kts)
+- **Issue**: `com.example.frontend` was still a placeholder and not suitable for release packaging
+- **File**: `frontend/android/app/build.gradle.kts`
 - **Changed To**: `com.manga_translator.reader`
-- **Impact**: Ready for Google Play Store publishing, professional package naming
+- **Impact**: Android package naming is now production-oriented
 
-### 4. ✅ Updated `pubspec.yaml` Dependencies
-- **Issue**: Only `flutter` and `cupertino_icons`, missing critical packages
-- **File**: [frontend/pubspec.yaml](../../frontend/pubspec.yaml)
-- **Added**:
-  - **Networking**: `dio` (HTTP client), `http`
+### 4. ✅ Updated Flutter Dependencies
+- **Issue**: The initial Flutter app only had template dependencies and lacked packages needed for a real UI flow
+- **File**: `frontend/pubspec.yaml`
+- **Added / Updated**:
+  - **Networking**: `dio`
   - **File Handling**: `file_picker`, `image_picker`, `path`
-  - **Images**: `cached_network_image`, `image`
+  - **Images / Utilities**: `image`, `cached_network_image`
   - **State Management**: `provider`
-  - **Utils**: `intl`, `uuid`, `shared_preferences`
-- **Impact**: Can now communicate with backend, pick files, handle images
+  - **Helpers**: `intl`, `uuid`, `shared_preferences`
+- **Impact**: Frontend is ready to talk to the backend and manage OCR-oriented UI state
 
 ### 5. ✅ Implemented Flutter UI Foundation
-- **Issue**: Only counter app template, no actual features
-- **New Files Created**:
-  - `lib/main.dart` - App entry point with Provider setup
-  - `lib/screens/home_screen.dart` - File upload & language selection
-  - `lib/screens/results_screen.dart` - Translation results viewer
-  - `lib/services/api_service.dart` - Backend communication layer
-  - `lib/providers/translation_provider.dart` - State management
-  - `lib/models/translation_model.dart` - Data models
-  - `lib/widgets/file_upload_widget.dart` - File picker widget
+- **Issue**: Project previously contained only the default Flutter counter template
+- **Files Added / Updated**:
+  - `frontend/lib/main.dart`
+  - `frontend/lib/screens/home_screen.dart`
+  - `frontend/lib/screens/results_screen.dart`
+  - `frontend/lib/services/api_service.dart`
+  - `frontend/lib/providers/translation_provider.dart`
+  - `frontend/lib/models/translation_model.dart`
+  - `frontend/lib/widgets/file_upload_widget.dart`
 
-**Features Implemented**:
-- ✅ File upload (PDF, CBZ, ZIP, JPG, PNG)
-- ✅ Language selection dropdown
-- ✅ Progress indicators (uploading, processing)
-- ✅ Status polling from backend
-- ✅ Results display with pagination
-- ✅ Original vs Translated toggle
-- ✅ Text block display with confidence scores
-- ✅ Error handling & retry logic
+**Current UI capabilities**:
+- ✅ File/image upload from Flutter
+- ✅ Target language selection
+- ✅ Upload/OCR loading state
+- ✅ OCR result display in structured text blocks
+- ✅ Error handling and reset flow
+- ✅ Frontend contract aligned with the backend OCR MVP
+
+### 6. ✅ Backend and Frontend API Contract Synchronized
+- **Issue**: Frontend originally expected a translation job API (`/api/translate/status`, `/download`, async polling), while backend only exposed a simple OCR upload endpoint
+- **Files Updated**:
+  - `backend/server/main.py`
+  - `frontend/lib/services/api_service.dart`
+  - `frontend/lib/providers/translation_provider.dart`
+  - `frontend/lib/models/translation_model.dart`
+  - `frontend/lib/screens/home_screen.dart`
+  - `frontend/lib/screens/results_screen.dart`
+- **Changes Made**:
+  - Added compatibility endpoint aliases for `/api/health` and `/api/translate/upload`
+  - Standardized backend upload response so Flutter can parse it directly
+  - Removed unsupported frontend polling/download assumptions for the current MVP
+  - Clarified OCR-only behavior in the UI
+- **Impact**: The app now reflects the real MVP scope instead of a not-yet-implemented translation pipeline
+
+### 7. ✅ Documentation and Setup Updated
+- **Files Updated**:
+  - `README.md`
+  - `setup.sh`
+  - `.gitignore`
+- **Changes Made**:
+  - Replaced outdated `ScanBridge` naming with the actual project name
+  - Updated setup instructions to use `requirements.txt`
+  - Clarified current MVP scope: OCR upload and OCR result viewing
+  - Removed stale documentation references to features not implemented yet
+- **Impact**: GitHub-facing documentation is now aligned with the real codebase state
 
 ---
 
-## Next Steps (Sprint 2 - Backend Features)
+## Current MVP Scope
 
-1. Implement YOLO model for text detection
-2. Implement LaMa for inpainting (text removal)
-3. Integrate translation API (Sugoi/Google/DeepL)
-4. Add CBZ/PDF file handling
-5. Setup image preprocessing pipeline
+What works now:
+1. Run local FastAPI backend
+2. Upload an image from Flutter
+3. Execute OCR with MangaOCR
+4. Return OCR results in a frontend-friendly JSON format
+5. Display OCR blocks in the Flutter UI
 
-## Next Steps (Sprint 3 - Enhancements)
+What does **not** exist yet:
+1. Full translation pipeline
+2. Async job status endpoint
+3. Download translated output endpoint
+4. Generated translated preview images
+5. Balloon detection and inpainting pipeline
 
-1. Add tests (pytest for backend, flutter test for frontend)
-2. Create `.env.example` for configuration
+---
+
+## Next Steps (Sprint 2)
+
+1. Implement text balloon detection with YOLOv8
+2. Add real translation integration
+3. Add inpainting / text replacement
+4. Add support for PDF / CBZ / ZIP pipeline
+5. Return final translated assets and richer metadata
+
+## Next Steps (Sprint 3)
+
+1. Add automated tests for backend and frontend
+2. Add `.env.example`
 3. Add Docker support
-4. Setup CI/CD pipeline
-5. Add logging configuration
-6. Security hardening (fix CORS, input validation)
+4. Add CI/CD workflow
+5. Improve logging and observability
+6. Harden CORS and request validation
 
 ---
 
@@ -79,8 +123,9 @@
 cd backend
 python3 -m venv venv
 source venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
-uvicorn server.main:app --reload
+uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### Frontend Setup
@@ -92,4 +137,4 @@ flutter run
 
 ---
 
-**Status**: ✅ **Critical fixes complete. Project is MVP-ready for UI development and backend feature implementation.**
+**Status**: ✅ **Sprint 1 fixes complete. Project is now synchronized around an OCR MVP, with translation pipeline work deferred to the next sprint.**

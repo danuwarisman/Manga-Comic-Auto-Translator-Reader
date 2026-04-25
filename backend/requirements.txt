@@ -7,7 +7,7 @@ uvicorn[standard]>=0.24.0
 
 # AI & ML Libraries
 ultralytics>=8.0.0  # YOLOv8 for balloon/text detection
-manga-ocr>=0.7.0    # OCR specifically for manga
+manga-ocr>=0.1.0    # OCR specifically for manga
 torch>=2.0.0        # PyTorch - ML framework
 torchvision>=0.15.0 # Computer vision models
 torchaudio>=2.0.0   # Audio processing (if needed)
